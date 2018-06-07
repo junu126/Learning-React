@@ -73,9 +73,7 @@ lordify(regularPerson) // 캔터베리의 준우
 ```
 객체의 필드에 접근하기 위해 점(.)과 필드 이름을 사용하는 대신 regularPerson에서 필요한 값을 구조 분해로 가져올 수 있다.
 ```js
-var lordify = ({firstname}) => {
-    console.log(`캔터베리의 ${firstname}`);
-}
+var lordify = ({firstname}) => console.log(`캔터베리의 ${firstname}`);
 
 lordify(regularPerson); // 캔터베리의 준우
 ```
@@ -153,4 +151,86 @@ const skier = {
 ```
 객체 리터럴 개선으로 현재 영역에서 볼 수 있는 변수들을 객체의 필드에 대입할 수 있으며, function키워드를 입력하지 않아도 되기 때문에 입력해야 할 코드 양도 줄어든다.
 
+> 스프레드 연산자
+- 세 개의 점(...)으로 이루어진 연산자로, 몇 가지 다른 역할을 담당한다.  
+
+먼저 스프레드 연산자를 사용해 배열의 내용을 조합할 수 있다. 예를 들어 두 배열이 있다면 스프레드 연산자를 적용하여 두 배열의 모든 원소가 들어간 세 번째 배열을 쉽게 만들 수 있다.
+```js
+var peaks = ["대청봉", "중청봉", "소청봉"];
+var canyons = ["천불동계곡", "가야동계곡"];
+var seoraksan = [...peaks, ...canyons];
+
+console.log(seoraksan.join(', '));  // 대청봉, 중청봉, 소청봉, 천불동계곡, 가야동계곡
+```
+peaks와 canyons에 포함된 모든 원소가 seoraksan이라는 새 배열에 들어간다.  
+
+위 예제에서 정의한 peaks 배열의 마지막 원소를 변수에 담고 싶을 때, Array.reverse 메서드를 사용해 배열을 뒤집고 구조 분해를 사용해 첫 번째 원소를 변수에 넣으면 된다.
+
+```js
+var peaks = ["대청봉", "중청봉", "소청봉"];
+var [last] = peaks.reverse();   // 구조 분해
+
+console.log(last)   // 소청봉
+console.log(peaks.join(', '))   // 소청봉, 중청봉, 대청봉
+```
+
+위의 코드에는 문제점이 있다. reverse 메서드는 원본 배열을 변경한다. 하지만 스프레드 연산자를 사용하면 원본 배열을 변경하지 않고 복사본을 만들어서 뒤집을 수 있다.
+
+```js
+var peaks = ["대청봉", "중청봉", "소청봉"];
+var [last] = [...peaks].reverse();
+
+console.log(last)   // 소청봉
+console.log(peaks.join(', '));  // 대청봉, 중청봉, 소청봉
+```
+스프레드 연산자를 사용해 배열의 원소를 복사했기 때문에 원본인 peaks는 변경되지 않고 그대로 남는다. 따라서 나중에 필요할 때 원본 peaks를 다시 사용할 수 있다.  
+
+스프레드 연산자를 사용해 배열의 나머지 원소를 얻을 수도 있다.
+```js
+var lakes = ["경포호", "화진포", "송지호", "청초호"];
+var [first, ...rest] = lakes;   // [first, ...rest]에 lakes에 있는 값을 넣어줌
+
+console.log(lakes.join(', '));   // "화진포, 송지호, 청초호"
+console.log(rest.join(', '));    // "화진포, 송지호, 청초호"
+```
+스프레드 연산자를 사용해 함수의 인자를 배열로 모을 수도 있다. 다음 예제는 n개의 인자를 스프레드 연산자를 사용해 배열로 모든 다음 그 배열을 사용해 여러 가지 내용을 콘솔 메시지로 찍는 함수를 보여준다.
+```js
+function directions(...args) {
+    var [start, ...remaining] = args;
+    var [finish, ...stops] = remaining.reverse();
+
+    console.log(`${args.length} 도시를 운행합니다.`);   // 6 도시를 운행합니다.
+    console.log(`${start}에서 출발합니다.`);    // 서울에서 출발합니다.
+    console.log(`목적지는 ${finish}입니다.`);   // 목적지는 부산입니다.
+    console.log(`중간에 ${stops.length}군데 들립니다.`);    // 중간에 4군데 들립니다.
+}
+
+directions(
+    "서울",
+    "수원",
+    "천안",
+    "대전",
+    "대구",
+    "부산"
+)
+```
+
+스프레드 연산자를 객체에 사용할 수도 있다. 스프레드 연산자를 객체에 사용하는 방법은 배열에와 비슷하다. 다음 예제에서는 두 배열을 세 번째 배열로 합쳤던 과정을 배열 대신 객체를 사용해 수행한다.
+
+```js
+var morning = {
+    breakfast: "미역국" ,
+    lunch: "삼치구이와 보리밥",
+};
+
+var dinner = "스테이크 정식";
+
+var backpackingMeals = {
+    ...morning,
+    dinner,
+};
+
+console.log(backpackingMeals);
+// {breakfast: "미역국", lunch: "삼치구이와 보리밥", dinner: "스테이크 정식"};
+```
 ---
