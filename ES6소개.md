@@ -280,3 +280,81 @@ getFakeMembers(5).then(
 노드에서도 프라미스를 많이 사용하는 것을 볼 수있다.  
 따라서 프라미스를 잘 이해하는 것은 최신 자바스크립트 개발자에게 필수적인 덕목이다.
 
+---
+
+## 클래스
+
+이전 자바스크립트에는 공식적으로 클래스가 없었다. 타입은 함수로 정의했었다. 과거에는 다음과 같이 함수를 정의하고 그 함수 객체에 있는 프로토타입을 사용해 메서드를 정의 했다.
+
+```js
+function Vacation(destination, length) {
+    this.destination = destination;
+    this.length = length
+}
+
+Vacation.prototype.print = () => {
+    console.log(this.destination + "은(는)" + this.length + "일 걸립니다.");
+}
+
+var maui = new Vacation("마우이", 7);   // new를 사용해서 maui라는 객체를 생성
+
+maui.print()    // 마우이은(는) 7일 걸립니다.
+```
+ES6에는 클래스 선언이 추가되었다. 하지만 자바스크립트는 여전히 기존 방식으로 작동한다. 함수는 객체며 상속은 프로토타입을 통해 처리된다.
+
+```js
+class Vacation {
+    contructor(destination, length) {
+        this.destination = destination;
+        this.length = length;
+    }
+
+    print() {
+        console.log(`${this.destination} 은(는) ${this.length}일 걸립니다.`);
+    }
+}
+```
+    대문자 관습  
+    -> 모든 타입의 이름은 대문자로 시작하는 규칙을 흔히들 사용한다.
+
+클래스를 정의하고 나면 new 키워드를 사용해 해당 클래스의 새로운 인스턴스를 만들 수 있다.  
+그 후 그 인스턴스의 메서드(클래스에 정의된)를 호출할 수 있다.
+
+```js
+const trip = new Vacation("칠레 산티아고", 7);  // new를 사용해서 Vacation이라는 class에 trip이라는 객체를 생성
+console.log(trip.print())   // 칠레 산티아고은(는) 7일 걸립니다.
+```
+클래스 객체를 만들고 나면 새로운 객체를 생성하기 위해 원하는 만큼 new를 호출할 수 있다.  
+클래스를 확장할 수도 있다. 기존의 클래스를 확장한 새로운 클래스는 상위 클래스의 모든 프로퍼티와 메서드를 상속한다.  
+이렇게 상속한 프로퍼티나 메서드를 하위 클래스 선언 안에서 변경할 수도 있다.  
+
+Vacation을 여러 가지 휴가 타입을 정의하기 위한 추상 클래스로 사용할 수도 있다. 예를 들어 EXpedition은 Vacation 클래스를 확장하여 장비를 표현하는 프로퍼티(gear)를 더 가진다.
+```js
+class Expedition extends Vacation { // class 자녀클래스 extends 부모클래스
+    constructor(destination, length, gear) {    // destination, length, gear과 함께 부모 클래스의 생성자를 호출
+        super(destination, length); // 파생클래스에서 super()를 먼저 사용해야 'this'를 사용 가능
+        // 부모 객체의 함수를 호출하는데 사용
+        this.gear = gear;
+    }
+
+    print() {
+        super.print();  // Vacation 함수의 print함수를 실행
+        console.log(`당신의 ${this.gear.join("와(과) 당신의 ")}를(을) 가져오십시오.`);
+    }
+}
+```
+여기서 하위 클래스는 상위 클래스의 프로퍼티를 상속한다는 간단한 상속 관계를 볼 수 있다.  
+print() 에서는 상위 클래스에 있는 print()를 호출한 다음 Expedition에 있는 추가 정보를 출력했다.  
+상속을 사용해 만든 하위 클래스의 인스턴스를 생성할 때도 상위 클래스의 인스턴스를 생성할 때와 마찬가지로 new 키워드를 사용한다.
+
+```js
+const trip2 = new Expedition("한라산", 3, ["선글라스", "오색깃발", "카메라"]);
+trip2.print();
+// 한라산은(는) 3일 걸립니다.
+// 당신의 선글라스와(과) 당신의 오색 깃발와(과) 당신의 카메라를(을) 가져오십시오.
+```
+
+    클래스 상속과 프로토타입 상속
+    -> class 키워드를 사용하더라도 여전히 자바스크립트의 프로토타입 상속을 사용하고 있는 것이다. Vacation.prototype을 콘솔에 log로 찍으면 프로토타입에 들어 있는 생성자와 print메서드를 볼 수 있다.  
+
+객체 지향을 알고넘어가는 이유는 리액트 컴포넌트를 만들 때 클래스를 활용하기 위해서이다.
