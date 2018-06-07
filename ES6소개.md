@@ -358,3 +358,54 @@ trip2.print();
     -> class 키워드를 사용하더라도 여전히 자바스크립트의 프로토타입 상속을 사용하고 있는 것이다. Vacation.prototype을 콘솔에 log로 찍으면 프로토타입에 들어 있는 생성자와 print메서드를 볼 수 있다.  
 
 객체 지향을 알고넘어가는 이유는 리액트 컴포넌트를 만들 때 클래스를 활용하기 위해서이다.
+
+## ES6 모듈
+**자바스크립트 모듈**은 다른 자바스크립트 파일에서 쉽게 불러서 활용할 수 있는 재사용 가능한 코드 조각을 말한다. 최근까지 자바스크립트를 모듈화하는 방법은 모듈의 임포트와 익스포트를 처리하는 라이브러리를 활용하는 것뿐이었다. 하지만 ES6부터는 자바스크립트 자체에서 모듈을 지원하기 시작했다.
+
+자바스크립트는 각각의 모듈을 별도의 파일로 저장한다. 모듈을 만들고 외부에 익스포트하는 방법에는 한 모듈에서 여러 자바스크립트 객체를 외부에 노출시키는 방법과 모듈당 하나의 자바스크립트 객체를 노출시키는 방법이 있다.
+
+아래의 **text-helper.js**에 있는 모듈은 두 함수를 외부에 노출시킨다.
+
+```js
+export const print(message) => log(message, new Date())
+
+export const log(message, timestamp) => console.log(`${timestamp.toString()}: ${message}`);
+```
+export를 사용해 다른 모듈에서 활용하도록 이름(함수, 객체, 변수, 상수)을 외부에 익스포트한다. text-helper.js에 정의된 다른 선언은 이 모듈 내부에 한정되됨(즉, 로컴 선언이 됨)
+
+모듈에서 단 하나의 이름만 외부에 익스포트하고 싶을 때도 있다. 이러한 경우 export default를 사용한다.
+
+```js
+const freel = new Expedition("Mt. Freel", 2, ["water", "snack"]);
+export default freel
+```
+
+export defalut는 오직 하나의 이름만 노출하는 모듈에서 사용할 수 있다. 다시 말하지만 export나 export defalut에서는 기본 타입, 객체, 배열, 함수 등 모든 타입의 자바스크립트 이름을 외부에 노출시킬 수 있다.
+
+모듈은 import 명령을 사용해 다른 자바스크립트 파일을 불러와 사용할 수 있다. 외부에 여러 이름을 노출한 모듈은 임포트할 때는 객체 구조 분해를 활용할 수 있다. export default를 사용해 한 이름만 노출한 경우에는 노출된 대상을 구조분해 없이 한 이름으로 부를 수 있다.
+
+```js
+import {print, log} from './text-helpers'
+import freel form './mt-freel'
+
+print('메시지를 print');
+log('메시지를 log');
+
+freel.print();
+```
+모듈에서 가져온 대상의 다른 이름을 부여할 수 도있다.
+
+```js
+import { print as p, log as l} from 'text-helpers'
+// print의 이름을 p로 바꾸겠다. ( as의 이용 )
+
+p('메시지를 print');
+l('메시지를 log');
+```
+
+import *를 사용하면 다른 모듈에서 가져온 이름을 사용자가 정한 로컬 이름 공간 안에 가둘 수 있다.
+
+```js
+import * as fns from './text-helpers'
+```
+아직은 모든 브라우저가 ES6 모듈을 완전히 지원하지는 않는다. 바벨은 ES6 모듈을 지원한다.
