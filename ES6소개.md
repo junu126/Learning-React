@@ -234,3 +234,49 @@ console.log(backpackingMeals);
 // {breakfast: "미역국", lunch: "삼치구이와 보리밥", dinner: "스테이크 정식"};
 ```
 ---
+## 프라미스
+**프라미스**는 비동기적인 동작을 다루기 위한 방법이다.  
+비동기 요청을 보내면 모든 것이 바라는 대로 잘 작동해서 성공하거나 또는 오류가 생긴다.  
+
+요청이 성공하거나 실패하는 데도 다양한 유형이 있을 수 있다.  
+예를 들어 데이터 얻기에 성공할 때까지 여러 가지 방법을 시도해 볼 수 있다. 또한 여러 유형의 오류가 발생할 수 있다. 
+
+프라미스를 사용하면 이런 여러 가지 성공이나 실패를 편리하게 단순한 성공이나 실패로 환원할 수 있다.  
+</br>
+
+---
+</br>
+
+randomuser.me API로 부터 데이터를 가져오는 비동기 프라미스를 하나 만들때, 이 API에는 가짜 멤버에 대한 전자우편 주소, 이름, 전화번호, 집주소 등의 정보가 들어 있으며, 그런 데이터를 더미로 활용하기 좋다.  
+
+_**getFakeMembers**_ 함수는 새로운 프라미스를 반환한다. 그 프라미스는 randomuser.me API에 요청을 보낸다. 프라미스가 성공한 경우에는 데이터를 제데로 받아올 것 이고, 실패한 경우에는 오류가 발생할 것 이다.
+
+```js
+const getFakeMembers = const => new Promise((resolves, rejects) => {
+    const api = `https://api.randomuser.me/?nat=US&result=${count}`;
+    const request = new XMLHttpRequest();
+    request.open('GET', api);
+    request.onload = () => {
+        (request.status === 200) ?
+        resolves(JSON.parse(request.response).result) :
+        reject(Error(request.statusText))
+    };
+    request.onerror = (err) => rejects(err);
+    request.send();
+});
+```
+이 함수로 프라미스를 만들 수 있게 되었지만 아직 프라미스를 사용한 것은 아니다. 가져오고 싶은 멤버 수를 getFakeMembers 함수에 전달해 호출하면 실제 프라미스를 사용할 수 있다.  
+프라미스가 성공한 경우에 처리할 작업을 기술하기 위해 then 함수를 프라미스 뒤에 연쇄 (체이닝) 시킨다.  
+이때 오류를 처리하기 위한 콜백도 함께 제공한다.
+
+```js
+getFakeMembers(5).then(
+    members => console.log(members),
+    err => console.error(new Error("randomuser.me에서 멤버를 가져올 수 없습니다."));
+)
+```
+프라미스는 비동기 요청을 더 쉽게 처리할 수 있게 해준다.  
+자바스크립트에서는 비동기로 데이터를 처리하는 경우가 많기 때문에 비동기 요청을 쉽게 처리할 수 있으면 좋다.  
+노드에서도 프라미스를 많이 사용하는 것을 볼 수있다.  
+따라서 프라미스를 잘 이해하는 것은 최신 자바스크립트 개발자에게 필수적인 덕목이다.
+
