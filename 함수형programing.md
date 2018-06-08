@@ -255,3 +255,99 @@ const addColor = (title, list) => [...list, {title}]
 ```
 이 함수는 원본 리스트의 원소를 새로운 배열에 복사하고, title파라미터로 받은 값을 title프로퍼티로 하는 객체를 새 배열에 추가한다.  
 이 함수는 인자로 받은 list를 변경하지 않기 때문에 list의 원본인  colorArray의 불변성을 지켜준다.
+> 순수 함수
+- 파라미터에 의해서만 반환값이 결정되는 함수.
+
+순수함수는 최소 하나 이상의 인자를 받고, 인자가 같으면 항상 같은 값이나 함수를 반환한다.  
+
+순수 함수에는 부수 효과 (*전역 변수를 설정하거나, 함수 내부나 애플리케이션에 있는 다른 상태를 변경하는 것*) 가 없다. 또 순수 함수는 인자를 변경 불가능한 데이터로 취급한다.
+
+다음은 순수하지 않은 함수 예제이다.
+```js
+var frederick = {
+    name: "Frederick Douglass",
+    canRead : false,
+    canWrite : false,
+};
+
+selfEducate = () => {
+    frederick.canRead = true;
+    frederick.canWrite = true;
+    return frederick;
+}
+
+selfEducate();
+console.log( frederick );
+
+// {name: "Frederick Douglass", canRead: true, canWrite: true}
+```
+selfEducate 함수는 순수하지 않다. 이 함수는 인자를 취하지 않으며, 값을 반환하거나 함수를 반환하지 않는다. 또한 자신의 영역 밖에 있는 frederick이라는 변수를 바꾸기까지 한다.
+
+slefEducate 함수가 호출되면 뭔가를 바꾼다. 즉, 함수 호출에 따른 부수 효과가 발생한다.  
+
+다음은 selfEducate가 파라미터를 받게 한 예제이다.
+```js
+var frederick = {
+    name: "Frederick Douglass",
+    canRead : false,
+    canWrite : false,
+};
+
+const selfEducate = (person) => {
+    person.canRead = true;
+    person.canWrite = true;
+    return person;
+}
+
+console.log( selfEducate(frederick) );
+console.log( frederick );
+
+// {name: "Frederick Douglass", canRead: true, canWrite: true}
+// {name: "Frederick Douglass", canRead: true, canWrite: true}
+```
+파라미터를 받기는 하지만, 이 selfEducate 함수도 순수하지 않다. 이 함수에도 부수 효과가 있기 때문이다.  
+
+이 함수를 호출하면 인자로 넘긴 객체의 필드가 바뀐다. 이 함수에 전달된 객체를 불변 데이터로 취급한다면 순수 함수를 얻을 수 있을 것 이다.  
+
+다음은 받은 파라미터를 변경하지 않도록 한 예제이다.
+```js
+var frederick = {
+    name: "Frederick Douglass",
+    canRead : false,
+    canWrite : false,
+};
+
+const selfEducate = (person) => ({
+    ...person,
+    canRead = true,
+    canWrite = true,
+});
+
+console.log( selfEducate(frederick) );
+console.log( frederick );
+
+// {name: "Frederick Douglass", canRead: true, canWrite: true}
+// {name: "Frederick Douglass", canRead: true, canWrite: true}
+```
+이 함수는 전달받은 인자 person으로부터 새로운 값을 계산하기 떄문에 순수 함수 이다.  
+
+다음은 DOM을 변경하는 순수하지 않은 함수 예제이다.
+```js
+Header = (text) => {
+    let h1 = document.createElement('h1');
+    h1.innerText = text;
+    document.body.appendChile(h1);
+}
+
+Header("Header() caused side effects");
+```
+리액트에서는 UI를 순수 함수로 표현한다. 다음 예제에서 Header는 머리글을 만들어내는 순수함수다.
+```js
+const Header = (props) => <h1>{props.title}</h1>;
+```
+순수 함수는 함수형 프로그래밍의 또 다른 핵심 개념이다. 순수 함수를 사용하면 애플리케이션의 상태에 영향을 미치지 않기 때문에 코딩이 편해진다.  
+
+> 함수를 만들 때 세 가지 규칙
+1. 순수 함수는 파라미터를 최소 하나 이상 받아야 한다.
+2. 순수 함수는 값이나 다른 함수를 반환해야 한다.
+3. 순수 함수는 인자나 함수 밖에 있는 다른 변수를 변경하거나 입출력을 수행해서는 안 된다.
