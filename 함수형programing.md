@@ -15,7 +15,7 @@ ES6에는 함수형 프로그래밍 기법을 더 풍부하게 해주는 화살�
 
 > 자바스크립트에서는 함수가 애플리케이션의 데이터를 표현할 수도 있다. 문자열이나 수 또는 다른 모든 값과 마찬가지로 var 키워드를 사용해 함수를 정의할 수 있다.
 
-```js
+```javascript
 var log = function(message) {
     console.log(message);
 }
@@ -26,14 +26,14 @@ log("자바스크립트에서는 함수를 변수에 넣을 수 있습니다.");
 ```
 
 ES6에서는 화살표 함수를 사용해 같은 함수를 정의할 수 있다. 함수형 프로그래머들은 작은 함수를 아주 많이 작성하기 때문에 화살표 함수 구문을 사용할 수 있으면 코딩이 훨씬 더 간편해진다.
-```js
+```javascript
 const log = message () => console.log(message);
 ```
 앞의 두 문장은 같은 일을 한다. 두 문장 모두 함수를 log라는 변수에 넣는다.  
 추가로 두 번째 문장에서는 const 키워드를 사용했기 때문에 log를 덮어쓰지 못하게 막아준다.  
 
 함수를 변수에 넣을 수 있는 것과 마찬가지로 객체에 넣을 수도 있다.
-```js
+```javascript
 const obj = {
     message: "함수를 다른 값과 마찬가지로 객체에 추가할 수도 있습니다.",
     log(message) {
@@ -44,7 +44,7 @@ const obj = {
 // 함수를 다른 값과 마찬가지로 객체에 추가할 수도 있습니다.
 ```
 심지어 함수를 배열에 넣을 수도 있다.
-```js
+```javascript
 cosnt messages = [
     "함수를 배열에 넣을 수도 있습니다.",
     message => console.log(mesage),
@@ -56,7 +56,7 @@ message[1](message[0]) // 함수를 배열에 넣을 수도 있습니다.
 message[3](message[2]) // 일반적인 값과 마찬가지입니다.
 ```
 다른 값과 마찬가지로 함수를 다른 함수에 인자로 넘길 수도 있습니다.
-```js
+```javascript
 const insideFn = logger => {
     logger("함수를 다른 함수에 인자로 넘길 수도 있습니다.");
 }
@@ -66,7 +66,7 @@ insideFn(message => console.log(message));
 // 함수를 다른 함수에 인자로 넘길 수도 있습니다.
 ```
 함수가 함수를 반환할 수도 있다. 이 또한 일반적인 값과 마찬가지다.
-```js
+```javascript
 var createScream = logger => message => 
     logger(message.toUpperCase() + "!!!");
 
@@ -89,7 +89,7 @@ scream('scream은 createScream이 반환한 함수를 가르킵니다.');
 **명령형 프로그래밍**은 코드로 원하는 결과를 달성해 나가는 과정에만 관심을 두는 프로그래밍 스타일이다. 어떤 문자열을 URL에서 사용할 수 있게 만드는 일반적인 작업을 살펴보면.  
 공백은 URL에서 사용할 수 있는 문자가 아니므로 문자열을 URL에서 사용할 수 있게 (URL 친화적으로) 만들려면 모든 공백()을 하이픈(-)으로 바꿔야 한다.  
 다음은 명령형 프로그래밍에서의 예시다.
-```js
+```javascript
 var string = "This is the midday show with Cheryl Waters";
 var urlFriendly = "";
 
@@ -105,7 +105,7 @@ console.log(urlFriendly);
 ```
 이 예제는 문자열의 모든 문자를 루프를 돌면서 공백을 만날 때마다 그 공백을 -로 바꾼다. 이런 구조의 프로그램은 우리가 원하는 것을 달성하는 방법에만 신경을 쓴다.  
 이와 같은 문제를 선언적으로 풀어보면
-```js
+```javascript
 const string = "This is the midday show with Cheryl Waters";
 const urlFriendly = string.replace(/ /g, "-");
 
@@ -116,7 +116,7 @@ console.log(urlFriendly);
 선언적 프로그래밍의 코드 구문은 어떤 일이 발생해야 하는지 기술하고, 실제로 그 작업을 처리하는 방법은 추상화로 아랫단에 감춰진다.  
 
 선언적 프로그램은 코드 자체가 어떤 일이 벌어질지 설명하기 때문에 좀 더 추론하기 쉽다. 다음 코드는 API에서 멤버를 가져온 다음 어떤 일을 해야 하는지 자세히 기술한다.
-```js
+```javascript
 const loadAndMapMembers = compose(
     combineWith(sessionStorage, "members"),
     save(sessionStorage, "members"),
@@ -135,7 +135,7 @@ getFakeMembers(100).then(loadAndMapMembers);
 
 이제 문서 객체 모델(DOM)을 만드는 과정을 살펴보면,  
 명령형 접근 방식은 다음과 같이 구축한다.
-```js
+```javascript
 var target = document.getElementById('target');
 var wrapper = document.createElement('div');
 var headline = document.createElement('h1');
@@ -149,7 +149,7 @@ target.appendChild(wrapper);
 이 코드는 엘리먼트를 만들고, 설정하고, 문서에 추가한다. 이런 식으로 DOM이 구축된 1만줄 되는 코드를 변경하거나 새로운 기능을 추가하거나 규모를 확장하는 것은 아주 어려운 일이다.  
 
 리액트 컴포넌트를 사용해 DOM을 선언적으로 구성하는 방법을 살펴보면
-```js
+```javascript
 const { render } = ReactDOM;
 
 const Welcome = () => (
@@ -177,7 +177,7 @@ render 함수는 컴포넌트에 있는 지시에 따라 DOM을 만든다. 이 �
 
 다음은 불변성이 어떻게 작동하는지 이해하기 위해 데이터를 변경한다는 것이 어떤 의미인지 살펴보는 예시이다.  
 잔디 색을 표현하는 객체를 생각해보자.
-```js
+```javascript
 let color_lawn = {
     title: "잔디",
     color: "00FF00",
@@ -185,7 +185,7 @@ let color_lawn = {
 };
 ```
 다음과 같이 색에 평점을 매기는 함수를 만든다. 이 함수는 넘겨받은 color 객체의 rating을 변경한다.
-```js
+```javascript
 rateColor = (color, rating) => {
     color.rating = rating;
     return color;
@@ -196,7 +196,7 @@ console.log(color_lawn.rating)                  // 5
 ```
 자바스크립트에서 함수의 인자는 실제 데이터에 대한 참조다. rateColor 함수 안에서 color의 rating을 변경하면 원본 color_lawn 객체의 rating도 바뀐다.  
 rateColor를 다음과 같이 고쳐쓰면 원본에는 아무런 해가 없이 색깔에 평점을 부여할 수 있다.
-```js
+```javascript
 var rateColor = (color, rating) => {
     return Object.assign({}, color, {rating:rating});
 }
@@ -210,7 +210,7 @@ Object.assign은 빈 객체를 받고, color 객체를 그 빈 객체에 복사�
 
 ES6의 화살표 함수와 ES7의 객체 스프레드 연산자르 활용해 같은 함수를 작성할 수도 있다.  
 이렇게 만든 rateColor 함수는 스프레드 연산자를 사용해 원본 color를 새로운 객체 안에 복사한 다음 rating 프로퍼티를 덮어 쓴다.
-```js
+```javascript
 const rateColor = (color, rating) => ({
     // 객체 스프레드 연산자
     // 노드나 브라우저 버전에 따라 지원 여부가 달라짐
@@ -223,7 +223,7 @@ const rateColor = (color, rating) => ({
 화살표 함수의 본문에서 바로 중괄호를 사용해 객체를 반환할 수 없기 때문에 꼭 괄호가 필요하다.  
 
 색의 이름으로 이루어진 배열을 생각해볼때,
-```js
+```javascript
 let colorArray= [
     {title: "과격한 빨강"},
     {title: "잔디"},
@@ -231,7 +231,7 @@ let colorArray= [
 ];
 ```
 이 배열에 Array.push를 사용해 색을 추가하는 함수를 작성할 수 있다.
-```js
+```javascript
 var addColor = (title, colors) => {
     colors.push({title : title});
     return colors;
@@ -242,7 +242,7 @@ console.log(colorArray.length);     // 4
 ```
 하지만 Array.push는 불변성 함수가 아니다. 이 addColor 함수는 원본 배열에 새로운 원소를 추가한다.  
 원래의 colorArray 배열을 변화시키지 않고 유지하기 위해서는 Array.concat을 사용해야 한다.
-```js
+```javascript
 const addColor = (title, array) => arr.concat({title});
 
 console.log(addColor("매력적인 초록", colorArray).length);   // 4
@@ -250,7 +250,7 @@ console.log(colorArray.length);      // 3
 ```
 Array.concat은 두 배열을 붙여준다. 여기서는 Array.concat이 새로운 객체를 받는다.  
 그 객체에는 새로운 색의 이름이 title이라는 이름의 프로퍼티로 들어 있다. Array.concat은 그 객체를 원래 배열을 복사한 새로운 배열 뒤에 추가한다.
-```js
+```javascript
 const addColor = (title, list) => [...list, {title}]
 ```
 이 함수는 원본 리스트의 원소를 새로운 배열에 복사하고, title파라미터로 받은 값을 title프로퍼티로 하는 객체를 새 배열에 추가한다.  
@@ -263,7 +263,7 @@ const addColor = (title, list) => [...list, {title}]
 순수 함수에는 부수 효과 (*전역 변수를 설정하거나, 함수 내부나 애플리케이션에 있는 다른 상태를 변경하는 것*) 가 없다. 또 순수 함수는 인자를 변경 불가능한 데이터로 취급한다.
 
 다음은 순수하지 않은 함수 예제이다.
-```js
+```javascript
 var frederick = {
     name: "Frederick Douglass",
     canRead : false,
@@ -286,7 +286,7 @@ selfEducate 함수는 순수하지 않다. 이 함수는 인자를 취하지 않
 slefEducate 함수가 호출되면 뭔가를 바꾼다. 즉, 함수 호출에 따른 부수 효과가 발생한다.  
 
 다음은 selfEducate가 파라미터를 받게 한 예제이다.
-```js
+```javascript
 var frederick = {
     name: "Frederick Douglass",
     canRead : false,
@@ -310,7 +310,7 @@ console.log( frederick );
 이 함수를 호출하면 인자로 넘긴 객체의 필드가 바뀐다. 이 함수에 전달된 객체를 불변 데이터로 취급한다면 순수 함수를 얻을 수 있을 것 이다.  
 
 다음은 받은 파라미터를 변경하지 않도록 한 예제이다.
-```js
+```javascript
 var frederick = {
     name: "Frederick Douglass",
     canRead : false,
@@ -332,7 +332,7 @@ console.log( frederick );
 이 함수는 전달받은 인자 person으로부터 새로운 값을 계산하기 떄문에 순수 함수 이다.  
 
 다음은 DOM을 변경하는 순수하지 않은 함수 예제이다.
-```js
+```javascript
 Header = (text) => {
     let h1 = document.createElement('h1');
     h1.innerText = text;
@@ -342,7 +342,7 @@ Header = (text) => {
 Header("Header() caused side effects");
 ```
 리액트에서는 UI를 순수 함수로 표현한다. 다음 예제에서 Header는 머리글을 만들어내는 순수함수다.
-```js
+```javascript
 const Header = (props) => <h1>{props.title}</h1>;
 ```
 순수 함수는 함수형 프로그래밍의 또 다른 핵심 개념이다. 순수 함수를 사용하면 애플리케이션의 상태에 영향을 미치지 않기 때문에 코딩이 편해진다.  
@@ -351,3 +351,6 @@ const Header = (props) => <h1>{props.title}</h1>;
 1. 순수 함수는 파라미터를 최소 하나 이상 받아야 한다.
 2. 순수 함수는 값이나 다른 함수를 반환해야 한다.
 3. 순수 함수는 인자나 함수 밖에 있는 다른 변수를 변경하거나 입출력을 수행해서는 안 된다.
+
+## 데이터 변환
+
